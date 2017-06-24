@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import Input from 'muicss/lib/react/input';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const style = require('./style.js').default;
 
@@ -10,18 +12,24 @@ class Security extends Component {
 
     render() {
         return (
-            <div className="container" style={style.headers}>
-                <div className="forms" style={style.headers}>
-                    <div className="header" style={style.headers}>
-                        <div >
-                            Welcome to Waiter
-                        </div>
-                        <div >
-                            security en cours
-                     </div>
-                    </div >
-                </div>
-            </div>
+            <Card>
+                <CardMedia style={style.inputStyle}>
+                    <TextField
+                        hintText="Current Password"
+                        floatingLabelText="Current Password"
+                        type="password"
+                    />
+                    <br />
+                    <TextField
+                        hintText="New Password"
+                        floatingLabelText="New Password"
+                        type="password"
+                    />
+                </CardMedia>
+                <CardActions style={style.headers}>
+                    <RaisedButton label="Save" primary={true} style={style.buttonStyle} />
+                </CardActions>
+            </Card>
         );
     }
 }

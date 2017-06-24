@@ -5,7 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const style = require('./style.js').default;
 
-class Signin extends Component {
+class Signup extends Component {
     constructor() {
         super();
     }
@@ -20,8 +20,17 @@ class Signin extends Component {
                 />
                 <CardMedia style={style.inputStyle}>
                     <TextField
+                        hintText="First Name"
+                        floatingLabelText="First Name"
+                    />
+                    <br />
+                    <TextField
+                        hintText="Last Name"
+                        floatingLabelText="Last Name"
+                    />
+                    <TextField
                         hintText="Email Address"
-                        floatingLabelText="Email Address"
+                        floatingLabelText="Email Adress"
                     />
                     <br />
                     <TextField
@@ -32,16 +41,11 @@ class Signin extends Component {
                 </CardMedia>
                 <CardActions style={style.headers}>
                     <RaisedButton label="Login" primary={true} style={style.buttonStyle} />
-                    <RaisedButton 
-                        label="Signup" 
-                        primary={true} 
-                        style={style.buttonStyle}
-                        onTouchTap={() => this.props.history.push('signup')}
-                    />
+                    <RaisedButton label="Signup" primary={true} style={style.buttonStyle} />
                 </CardActions>
             </Card>
         );
     }
 }
 
-export default Signin;
+export default Signup;

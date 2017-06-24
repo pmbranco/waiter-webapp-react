@@ -19,6 +19,7 @@ import Security from './ui/pages/security/index.jsx';
 import Map from './ui/pages/map/index.jsx';
 import Events from './ui/pages/event/index.jsx';
 import Account from './ui/pages/account/index.jsx';
+import Signup from './ui/pages/signup/index.jsx';
 
 class Main extends Component {
     render() {
@@ -26,7 +27,8 @@ class Main extends Component {
                 <Router history={hashHistory}>
                     <div>
                         <Route path='/' component={App} history={hashHistory}>
-                            <IndexRoute component={Signin} />
+                            <IndexRoute component={Signin} history={hashHistory}/>
+                            <Route path='/signup' component={Signup}/>
                             <Route path='/security' component={Security}/>
                             <Route path='/map' component={Map}/>
                             <Route path='/events' component={Events}/>
