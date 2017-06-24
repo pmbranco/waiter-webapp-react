@@ -1,14 +1,14 @@
 const style = {
-    container: {
-
-    },
     headers: {
-        padding: "16px"
+        textAlign: "center",
+        color: "#2c3e50"
     },
-    mesCouilles: {
-        marginLeft: "150px",
-        backgroundColor: "red"
-    }
+    inputStyle: {
+        padding: "10px"
+    },
+    buttonStyle: {
+        margin: "10px"
+        }
 }
 
 export default style;

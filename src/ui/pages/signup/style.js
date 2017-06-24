@@ -7,8 +7,9 @@ const style = {
         padding: "10px"
     },
     buttonStyle: {
-        margin: "10px"
-        }
+        margin: "10px",
+        textAlign: "center"
+    }
 }
 
 export default style;

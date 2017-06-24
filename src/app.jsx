@@ -20,7 +20,6 @@ class App extends Component {
   }
 
   _toggle(e) {
-    console.log(this.state.navOpen);
     e.preventDefault();
     this.setState({
       navOpen: !this.state.navOpen
@@ -52,10 +51,10 @@ class App extends Component {
               title="Menu"
               iconElementRight={<FontIcon className="material-icons" color={white} style={{ marginRight: 24 }}>clear</FontIcon>}
             />
-            <MenuItem onTouchTap={() => this._navigate('security', this.props.history).bind(this)}>Security</MenuItem>
-            <MenuItem onTouchTap={() => this._navigate('map', this.props.history).bind(this)}>Map</MenuItem>
-            <MenuItem onTouchTap={() => this._navigate('events', this.props.history).bind(this)}>Events</MenuItem>
-            <MenuItem onTouchTap={() => this._navigate('account', this.props.history).bind(this)}>Account</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >map</FontIcon>} onTouchTap={() => this._navigate('map', this.props.history).bind(this)}>Map</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('events', this.props.history).bind(this)}>Events</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >account_circle</FontIcon>} onTouchTap={() => this._navigate('account', this.props.history).bind(this)}>Account</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('security', this.props.history).bind(this)}>Security</MenuItem>
           </Drawer>
           <div className="content">
             {this.props.children}

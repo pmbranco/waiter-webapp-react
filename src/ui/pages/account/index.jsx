@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Input from 'muicss/lib/react/input';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const style = require('./style.js').default;
-
-console.log(style);
 
 class Account extends Component {
     constructor() {
@@ -12,18 +12,27 @@ class Account extends Component {
 
     render() {
         return (
-            <div className="container" style={style.headers}>
-                <div className="forms" style={style.headers}>
-                    <div className="header" style={style.headers}>
-                        <div >
-                            Page Account
-                        </div>
-                        <div >
-                            En chantier, n'est ce pas
-                     </div>
-                    </div >
-                </div>
-            </div>
+            <Card>
+                <CardMedia style={style.inputStyle}>
+                    <TextField
+                        hintText="First Name"
+                        floatingLabelText="First Name"
+                    />
+                    <br />
+                    <TextField
+                        hintText="Last Name"
+                        floatingLabelText="Last Name"
+                    />
+                    <br />
+                    <TextField
+                        hintText="Email address"
+                        floatingLabelText="Email address"
+                    />
+                </CardMedia>
+                <CardActions style={style.headers}>
+                    <RaisedButton label="Update" primary={true} style={style.buttonStyle} />
+                </CardActions>
+            </Card>
         );
     }
 }
