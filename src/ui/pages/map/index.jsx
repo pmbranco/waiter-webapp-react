@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 const style = require('./style.js').default;
 
-class Map extends Component {
+import LinkedComponent from '../../../infrastructure/linked_component';
+
+class Map extends LinkedComponent {
     constructor() {
         super();
     }

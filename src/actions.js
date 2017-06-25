@@ -1,1 +1,1 @@
-export {authentificationActions as AuthenticationActions} from './modules/authentification/actions'
+export {authentificationActions as AuthenticationActions} from './modules/authentication/actions/index';

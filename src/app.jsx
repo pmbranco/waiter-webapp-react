@@ -5,7 +5,9 @@ import { AppBar, Drawer, MenuItem, FontIcon } from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { white } from 'material-ui/styles/colors';
 
-class App extends Component {
+import LinkedComponent from './infrastructure/linked_component';
+
+class App extends LinkedComponent {
   constructor() {
     super();
     this.state = {
@@ -26,11 +28,11 @@ class App extends Component {
     })
   }
 
-  _navigate(path, history) {
+  _navigate(path) {
     this.setState({
       navOpen: false
     });
-    history.push(path)
+    this.redirect(path)
   }
 
   render() {
@@ -51,10 +53,10 @@ class App extends Component {
               title="Menu"
               iconElementRight={<FontIcon className="material-icons" color={white} style={{ marginRight: 24 }}>clear</FontIcon>}
             />
-            <MenuItem leftIcon={<FontIcon className="material-icons" >map</FontIcon>} onTouchTap={() => this._navigate('map', this.props.history)}>Map</MenuItem>
-            <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('events', this.props.history)}>Events</MenuItem>
-            <MenuItem leftIcon={<FontIcon className="material-icons" >account_circle</FontIcon>} onTouchTap={() => this._navigate('account', this.props.history)}>Account</MenuItem>
-            <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('security', this.props.history)}>Security</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >map</FontIcon>} onTouchTap={() => this._navigate('map')}>Map</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('events')}>Events</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >account_circle</FontIcon>} onTouchTap={() => this._navigate('account')}>Account</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('security')}>Security</MenuItem>
           </Drawer>
           <div className="content">
             {this.props.children}

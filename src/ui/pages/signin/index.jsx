@@ -5,7 +5,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const style = require('./style.js').default;
 
-class Signin extends Component {
+import LinkedComponent from '../../../infrastructure/linked_component';
+
+class Signin extends LinkedComponent {
     constructor() {
         super();
     }
@@ -36,7 +38,7 @@ class Signin extends Component {
                         label="Signup" 
                         primary={true} 
                         style={style.buttonStyle}
-                        onTouchTap={() => this.props.history.push('signup')}
+                        onTouchTap={() => this.redirect('signup')}
                     />
                 </CardActions>
             </Card>

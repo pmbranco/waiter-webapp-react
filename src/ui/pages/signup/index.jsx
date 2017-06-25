@@ -5,7 +5,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const style = require('./style.js').default;
 
-class Signup extends Component {
+import LinkedComponent from '../../../infrastructure/linked_component';
+
+class Signup extends LinkedComponent {
     constructor() {
         super();
     }
