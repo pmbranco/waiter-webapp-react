@@ -1,0 +1,1 @@
+export {default as ssrPromises} from './ssr_reducer';

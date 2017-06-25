@@ -1,0 +1,13 @@
+{
+  "include": [],
+  "exclude": [
+    "compression",
+    "webpack",
+    "nib",
+    "express",
+    "normalize.css",
+    "admin-lte",
+    "font-awesome",
+    "font-awesome-webpack"
+  ]
+}

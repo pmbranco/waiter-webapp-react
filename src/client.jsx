@@ -1,4 +1,38 @@
-import ReactDOM from 'react-dom'
+import Immutable from 'immutable';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {browserHistory, Router} from 'react-router';
+import {Provider} from 'react-redux';
+import {syncHistoryWithStore} from 'react-router-redux';
+
+import {configure as configureStore} from './store';
+import {default as routes} from './routes';
+
+const initialState = window.__INITIAL_STATE__;
+Object.keys(initialState).forEach(k => initialState[k] = Immutable.fromJS(initialState[k]));
+const store = configureStore(browserHistory, initialState);
+const history = syncHistoryWithStore(browserHistory, store);
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
+
+if (process.env.BROWSER) {
+  window.jQuery = window.$ = require('jquery/dist/jquery');
+}
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Router routes={routes(store)} history={history}/>
+  </Provider>,
+  document.getElementById('app')
+);
+
+
+
+/*import ReactDOM from 'react-dom'
 import App from './app.jsx'
 
 import React, { Component } from 'react'
@@ -8,11 +42,6 @@ import {
     IndexRoute,
     hashHistory
 } from 'react-router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
 
 import Signin from './ui/pages/signin/index.jsx';
 import Security from './ui/pages/security/index.jsx';
@@ -20,6 +49,8 @@ import Map from './ui/pages/map/index.jsx';
 import Events from './ui/pages/event/index.jsx';
 import Account from './ui/pages/account/index.jsx';
 import Signup from './ui/pages/signup/index.jsx';
+
+
 
 class Main extends Component {
     render() {
@@ -40,4 +71,4 @@ class Main extends Component {
     }
 }
 
-ReactDOM.render(<Main />, document.getElementById('root'))
+ReactDOM.render(<Main />, document.getElementById('root'))*/

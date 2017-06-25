@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import Input from 'muicss/lib/react/input';
 
 const style = require('./style.js').default;
-
-console.log(style);
 
 class Events extends Component {
     constructor() {
