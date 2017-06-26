@@ -2,7 +2,8 @@ import Immutable from 'immutable';
 import LocalStorage from 'localStorage';
 
 const defaultState = new Immutable.fromJS({
-  token: LocalStorage.getItem('token')
+  token: LocalStorage.getItem('token'),
+  userId: ""
 });
 
 function authentication_reducer (state = defaultState, action) {
@@ -10,16 +11,17 @@ function authentication_reducer (state = defaultState, action) {
   switch (action.type) {
 
     case 'SIGNUP_CREATE_SUCCESS':
-      console.log(action);
-      return _set_token(state, action.data.token);
+      nextState = state.set("userId", action.data.data.user._id);
+      return _set_token(state, action.data.data.token);
 
     case 'SIGNUP_CREATE_FAILURE':
       return _failure_token(defaultState);
 
     case 'AUTHENTICATION_CREATE_SUCCESS':
-      return _set_token(state, action.data.data.token);
+      nextState = state.set("userId", action.data.data.user._id);
+      return _set_token(nextState, action.data.data.token);
 
-    case 'AUTHENTICATION_INIT':
+    case 'AUTHENTICATION_INIT': // soucie avec l'id qu'on à pas si on fait ca
       var curToken = LocalStorage.getItem('token');
 
       if (curToken && curToken.length) {

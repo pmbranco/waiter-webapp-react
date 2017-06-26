@@ -1,0 +1,30 @@
+import Immutable from 'immutable';
+import LocalStorage from 'localStorage';
+
+const defaultState = new Immutable.fromJS({
+    user: {}
+});
+
+function user_reducer (state = defaultState, action) {
+  let nextState;
+  switch (action.type) {
+
+    case 'PASSWORD_UPDATE_SUCCESS':
+        return state;
+
+    case 'PASSWORD_UPDATE_FAILURE':
+        return state;
+
+    case 'GET_USER_SUCCESS':
+        nextState = state.set('user', action.data.data.user);
+        return nextState;
+
+    case 'GET_USER_FAILURE':
+        return state;
+
+    default:
+        return state;
+  }
+}
+
+export default user_reducer;

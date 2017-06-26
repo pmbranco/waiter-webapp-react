@@ -22,11 +22,11 @@ class Signup extends LinkedComponent {
     }
 
     _handleSubmit() {
-        this.dispatchWithLoader(AuthenticationActions.signup(this.state));
+        this.dispatchWithLoader(AuthenticationActions.signup(this.state))
+        .then(() => this.redirect("/events"));
     }
 
     render() {
-        console.log(this.state);
         return (
             <Card>
                 <CardTitle

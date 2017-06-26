@@ -8,7 +8,7 @@ import { white } from 'material-ui/styles/colors';
 
 import LinkedComponent from './infrastructure/linked_component';
 import Loader from './ui/base/loader';
-import { LoaderActions } from './actions';
+import { LoaderActions, AuthenticationActions } from './actions';
 
 class App extends LinkedComponent {
   constructor() {
@@ -20,7 +20,7 @@ class App extends LinkedComponent {
 
   componentWillMount() {
     this.props.dispatch(LoaderActions.loader(true));
-    //this.props.dispatch(AuthenticationActions.init());
+    this.props.dispatch(AuthenticationActions.init());
     this.setState({
       navOpen: false
     });
@@ -31,9 +31,9 @@ class App extends LinkedComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-/*    if (!nextProps.authentication.get('token') && window.location.pathname !== "/login") {
-      this.redirect("/login");
-    }*/
+    if (!nextProps.authentication.get('token') && !(window.location.pathname === "/signin" || window.location.pathname === "/signup")) {
+      this.redirect("/signin");
+    }
   }
 
   _toggle(e) {
@@ -55,7 +55,7 @@ class App extends LinkedComponent {
       <MuiThemeProvider>
         <div>
           <AppBar
-            title="Waiter coucou"
+            title="Waiter"
             onLeftIconButtonTouchTap={this._toggle.bind(this)}
           />
           <Drawer
