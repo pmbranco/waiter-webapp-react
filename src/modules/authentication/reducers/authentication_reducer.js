@@ -9,8 +9,15 @@ function authentication_reducer (state = defaultState, action) {
   let nextState;
   switch (action.type) {
 
-    case 'AUTHENTICATION_CREATE_SUCCESS':
+    case 'SIGNUP_CREATE_SUCCESS':
+      console.log(action);
       return _set_token(state, action.data.token);
+
+    case 'SIGNUP_CREATE_FAILURE':
+      return _failure_token(defaultState);
+
+    case 'AUTHENTICATION_CREATE_SUCCESS':
+      return _set_token(state, action.data.data.token);
 
     case 'AUTHENTICATION_INIT':
       var curToken = LocalStorage.getItem('token');

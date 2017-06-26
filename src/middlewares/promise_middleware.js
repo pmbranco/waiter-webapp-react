@@ -1,9 +1,4 @@
-
-const enums = {
-    failure: 'FAILURE',
-    request: 'REQUEST',
-    success: 'SUCCESS'
-}
+import { enums } from '../helpers/index';
 
 /**
  * middleware de gestion d'action asynchrone pour redux

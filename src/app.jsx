@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { browserHistory } from 'react-router';
 
 import { AppBar, Drawer, MenuItem, FontIcon } from 'material-ui';
@@ -6,6 +7,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { white } from 'material-ui/styles/colors';
 
 import LinkedComponent from './infrastructure/linked_component';
+import Loader from './ui/base/loader';
+import { LoaderActions } from './actions';
 
 class App extends LinkedComponent {
   constructor() {
@@ -16,9 +19,21 @@ class App extends LinkedComponent {
   }
 
   componentWillMount() {
+    this.props.dispatch(LoaderActions.loader(true));
+    //this.props.dispatch(AuthenticationActions.init());
     this.setState({
       navOpen: false
     });
+  }
+
+  componentDidMount() {
+    this.props.dispatch(LoaderActions.loader(false));
+  }
+
+  componentWillReceiveProps(nextProps) {
+/*    if (!nextProps.authentication.get('token') && window.location.pathname !== "/login") {
+      this.redirect("/login");
+    }*/
   }
 
   _toggle(e) {
@@ -61,6 +76,7 @@ class App extends LinkedComponent {
           <div className="content">
             {this.props.children}
           </div>
+          <Loader show={this.props.loader.get("isPageLoading")} />
         </div>
       </MuiThemeProvider>
     )
@@ -69,4 +85,9 @@ class App extends LinkedComponent {
 
 // TODO close the nav bar + style
 
-export default App
+export default connect((state) => {
+  return {
+    loader: state.loader,
+    authentication: state.authentication
+  }
+})(App);

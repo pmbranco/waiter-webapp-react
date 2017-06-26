@@ -3,6 +3,8 @@ import https from 'https';
 import LocalStorage from 'localStorage';
 import config from '../config';
 
+const querystring = require('querystring');
+
 let globalHeaders = {};
 const RequestHandler = (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) ? http : https;
 
@@ -64,13 +66,11 @@ class ApiCallLib {
     let token = LocalStorage.getItem('token');
     let headers = {};
     if (data) {
-      let postData = JSON.stringify(data);
+      let postData = querystring.stringify(data);
       headers['Content-Length'] = Buffer.byteLength(postData);
     }
 
-    if (!multipart) {
-      headers['Content-Type'] = 'application/json';
-    }
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     if (token) {
       headers['X-Access-Token'] = token;
@@ -118,7 +118,7 @@ class ApiCallLib {
 
       req.on('error', (e) => reject(e));
       if (dataToSend) {
-        req.write(JSON.stringify(dataToSend));
+        req.write(querystring.stringify(dataToSend));
       }
 
       req.end();
