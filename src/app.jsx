@@ -8,7 +8,7 @@ import { white } from 'material-ui/styles/colors';
 
 import LinkedComponent from './infrastructure/linked_component';
 import Loader from './ui/base/loader';
-import { LoaderActions, AuthenticationActions } from './actions';
+import { LoaderActions, AuthenticationActions, UserActions } from './actions';
 
 class App extends LinkedComponent {
   constructor() {
@@ -33,6 +33,10 @@ class App extends LinkedComponent {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.authentication.get('token') && !(window.location.pathname === "/signin" || window.location.pathname === "/signup")) {
       this.redirect("/signin");
+    }
+    console.log(nextProps.authentication.get('userId'))
+    if (nextProps.authentication.get('userId') && nextProps.authentication.get('userId') !== this.props.authentication.get('userId')) {
+      this.props.dispatch(UserActions.getUser(nextProps.authentication.get('userId')));
     }
   }
 

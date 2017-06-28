@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 const style = require('./style.js').default;
 
 import LinkedComponent from '../../../infrastructure/linked_component';
-import { AuthenticationActions } from '../../../actions';
+import { AuthenticationActions, UserActions } from '../../../actions';
 
 class Signup extends LinkedComponent {
     constructor() {
@@ -23,6 +23,7 @@ class Signup extends LinkedComponent {
 
     _handleSubmit() {
         this.dispatchWithLoader(AuthenticationActions.signup(this.state))
+        .then(() => this.dispatchWithLoader(UserActions.getUser(this.props.userId)))
         .then(() => this.redirect("/events"));
     }
 
@@ -68,6 +69,8 @@ class Signup extends LinkedComponent {
     }
 }
 
-export default connect(() => {
-  return {};
+export default connect((state) => {
+  return {
+      userId: state.authentication.get("userId")
+  };
 })(Signup);

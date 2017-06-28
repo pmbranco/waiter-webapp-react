@@ -3,7 +3,7 @@ import LocalStorage from 'localStorage';
 
 const defaultState = new Immutable.fromJS({
   token: LocalStorage.getItem('token'),
-  userId: ""
+  userId: LocalStorage.getItem('userId')
 });
 
 function authentication_reducer (state = defaultState, action) {
@@ -11,21 +11,20 @@ function authentication_reducer (state = defaultState, action) {
   switch (action.type) {
 
     case 'SIGNUP_CREATE_SUCCESS':
-      nextState = state.set("userId", action.data.data.user._id);
-      return _set_token(state, action.data.data.token);
+      return _set_token(state, action.data.data.token, action.data.data.user._id);
 
     case 'SIGNUP_CREATE_FAILURE':
       return _failure_token(defaultState);
 
     case 'AUTHENTICATION_CREATE_SUCCESS':
-      nextState = state.set("userId", action.data.data.user._id);
-      return _set_token(nextState, action.data.data.token);
+      return _set_token(state, action.data.data.token, action.data.data.user._id);
 
     case 'AUTHENTICATION_INIT': // soucie avec l'id qu'on à pas si on fait ca
-      var curToken = LocalStorage.getItem('token');
+      let curToken = LocalStorage.getItem('token');
+      let curId = LocalStorage.getItem('userId');
 
       if (curToken && curToken.length) {
-        return _set_token(defaultState, curToken);
+        return _set_token(defaultState, curToken, curId);
       }
 
       return state;
@@ -45,13 +44,21 @@ function authentication_reducer (state = defaultState, action) {
 }
 
 function _destroy_token (state) {
+  let nextState;
+
   LocalStorage.removeItem('token');
-  return state.set('token', null);
+  LocalStorage.removeItem('userId');
+  nextState = state.set("userId", null);
+  return nextState.set('token', null);
 } // <= _destroy_token
 
-function _set_token (state, token) {
+function _set_token (state, token, userId) {
+  let nextState;
+
   LocalStorage.setItem('token', token);
-  return state.set('token', token);
+  LocalStorage.setItem('userId', userId);
+  nextState = state.set("userId", userId);  
+  return nextState.set('token', token);
 } // <= _destroy_token
 
 function _failure_token (state) {
