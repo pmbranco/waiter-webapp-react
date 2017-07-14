@@ -2,7 +2,8 @@ import Immutable from 'immutable';
 import LocalStorage from 'localStorage';
 
 const defaultState = new Immutable.fromJS({
-    user: {}
+    user: {},
+    isWaiter: 1
 });
 
 function user_reducer (state = defaultState, action) {
@@ -28,6 +29,7 @@ function user_reducer (state = defaultState, action) {
         return state;
 
     case 'GET_USER_SUCCESS':
+        console.log(action.data.data.user)
         nextState = state.set('user', action.data.data.user);
         return nextState;
 

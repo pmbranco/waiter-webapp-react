@@ -24,8 +24,8 @@ class ApiCallLib {
    * @param {string} path - le chemin
    * @returns {Promise.<Object>}
    */
-  destroy (path) {
-    return this._request(path, 'DELETE');
+  destroy (path, clientType = 'client') {
+    return this._request(path, 'DELETE', clientType);
   }
 
   /**
@@ -33,8 +33,8 @@ class ApiCallLib {
    * @param {string} path - le chemin
    * @returns {Promise.<Object>}
    */
-  get (path) {
-    return this._request(path, 'GET');
+  get (path, clientType = 'client') {
+    return this._request(path, 'GET', clientType);
   }
 
   /**
@@ -42,8 +42,8 @@ class ApiCallLib {
    * @param {string} path - le chemin
    * @returns {Promise.<Object>}
    */
-  post (path, data) {
-    return this._request(path, 'POST', data);
+  post (path, data, clientType = 'client') {
+    return this._request(path, 'POST', clientType, data);
   }
 
   /**
@@ -51,8 +51,8 @@ class ApiCallLib {
    * @param {string} path - le chemin
    * @returns {Promise.<Object>}
    */
-  put (path, data) {
-    return this._request(path, 'PUT', data);
+  put (path, data, clientType = 'client') {
+    return this._request(path, 'PUT', clientType, data);
   }
 
   /**
@@ -62,7 +62,7 @@ class ApiCallLib {
    * @returns {*}
    * @private
    */
-  _getHeaders (data, multipart) {
+  _getHeaders (data, clientType) {
     let token = LocalStorage.getItem('token');
     let headers = {};
     if (data) {
@@ -71,6 +71,7 @@ class ApiCallLib {
     }
 
     headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    headers['x-user-type'] = clientType;
 
     if (token) {
       headers['X-Access-Token'] = token;
@@ -86,9 +87,9 @@ class ApiCallLib {
    * @returns {Promise.<object>} - renvoie la réponse
    * @private
    */
-  _request (path, method, dataToSend) {
+  _request (path, method, clientType, dataToSend) {
     const options = {
-      headers: this._getHeaders(dataToSend),
+      headers: this._getHeaders(dataToSend, clientType),
       protocol: config.api.protocol,
       host: config.api.host,
       port: config.api.port,

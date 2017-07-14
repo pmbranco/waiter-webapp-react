@@ -2,7 +2,7 @@ module.exports = {
   app: 'waiter-webapp-react',
   api: {
     protocol: 'http:',
-    host: '127.0.0.1',
+    host: 'wait4me.tk',
     port: '5000'
   },
   client: {

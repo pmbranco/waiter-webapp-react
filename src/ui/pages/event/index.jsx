@@ -35,10 +35,12 @@ class Events extends LinkedComponent {
             )
         }
         const children = events.map((event, index) => {
+          console.log("lol");
+          console.log(event);
             return (
                 <EventMiniature
                     event={event}
-                    handleViewPress={this._handleEventView.bind(this)}
+                    handleViewPress={this._handleEventView.bind(this, event._id)}
                     key={`EventMiniature_${index}`}
                 />
             )
@@ -52,7 +54,6 @@ class Events extends LinkedComponent {
     }
 
     render() {
-        console.log(this.state)
         return (
             <Card>
                 <CardTitle

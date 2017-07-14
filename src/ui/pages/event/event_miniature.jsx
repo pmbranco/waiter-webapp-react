@@ -26,9 +26,15 @@ class EventMiniature extends LinkedComponent {
         return (
             <Card>
                 <CardTitle
-                    title="Je suis un event"
-                    subtitle={event.name}
+                    title={event.name}
+                    subtitle={event.description}
                 />
+                <CardText>
+                    {event.address}
+                </CardText>
+                <CardText>
+                    There currently is {event.listOfWaiters.length} available for this event.
+                </CardText>
                 <CardActions >
                     <RaisedButton label="View" primary={true} onTouchTap={this.props.handleViewPress.bind(this, event._id)}/>
                 </CardActions>
