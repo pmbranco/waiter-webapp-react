@@ -69,7 +69,7 @@ function _renderView (store, renderProps, manifest) {
   );
 
   const state = store.getState();
-  const title = 'Yestudent';
+  const title = 'Waiter';
   const componentHTML = ReactDOMServer.renderToString(InitialComponent);
   const head = Helmet.rewind();
   return `
@@ -86,6 +86,7 @@ function _renderView (store, renderProps, manifest) {
           <script type="application/javascript">
             window.__INITIAL_STATE__ = ${JSON.stringify(state)};
           </script>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFzEEpqoJspKbTgb2vBhf3F5UP-NtLnHE"></script>
         </head>
         <body style="height:100%">
           <div id="app" style="height:100%"><div>${componentHTML}</div></div>
@@ -96,3 +97,5 @@ function _renderView (store, renderProps, manifest) {
 }
 
 export default serverSideRendering;
+
+

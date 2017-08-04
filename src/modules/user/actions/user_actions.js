@@ -41,6 +41,13 @@ function getUser(userId) {
     }
 }
 
+function toggleUserType(userType) {
+  return {
+    type: "TOGGLE_USER",
+    data: {userType: userType}
+  }
+}
+
 // --------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------
@@ -49,5 +56,6 @@ function getUser(userId) {
 export default {
   updatePassword,
   getUser,
-  updateUser
+  updateUser,
+  toggleUserType
 };

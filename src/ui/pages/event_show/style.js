@@ -11,6 +11,15 @@ const style = {
     padding: 5,
     textAlign: 'center'
   },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  sliderContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '10px'
+  },
   container: {
     position: 'absolute',
     backgroundColor: 'white',
@@ -25,7 +34,8 @@ const style = {
     left: 0,
     right: 0,
     bottom: 0,
-  }
+  },
+
 }
 
 export default style;

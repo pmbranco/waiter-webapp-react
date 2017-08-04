@@ -9,6 +9,7 @@ import { EventsActions, WaitActions, UserActions } from '../../../actions';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import Slider from 'material-ui/Slider';
 
 
 class EventShow extends LinkedComponent {
@@ -53,14 +54,17 @@ class EventShow extends LinkedComponent {
   }
 
   _requestWait(event) {
-    console.log(this.props.user._id + " " + event._id + " " + this.state.numberToBook)
     this.dispatch(WaitActions.requestWait(
       this.props.user._id,
       event._id,
       this.state.numberToBook
-    ))/*
-      .then(() => this._onRefresh);*/
+    ))
+      .then(() => this.dispatch(WaitActions.getCurrentWait(this.props.user._id, this.state.isWaiter ? 'waiter' : 'client')))
   }
+
+  handleSlider = (event, value) => {
+    this.setState({ numberToBook: value });
+  };
 
   _renderNotWaiter(event, wait, userId) {
     if (_.isEmpty(event)) {
@@ -96,15 +100,15 @@ class EventShow extends LinkedComponent {
           title="Request a Wait"
         >
           <CardText style={EventShowStyle.textContainer}>Waiter to Request : {this.state.numberToBook}</CardText>
-          {/*<Slider
-            minimumValue={1}
-            maximumValue={event.listOfWaiters.length}
-            value={1}
-            onValueChange={(value) => this.setState({ numberToBook: value })}
+          <Slider
+            min={0}
+            max={event.listOfWaiters.length}
             step={1}
-          />*/}
-          <CardActions >
-            <RaisedButton label="Request Wait" primary={true} onTouchTap={this._requestWait.bind(this, event)} />
+            value={this.state.numberToBook}
+            onChange={this.handleSlider}
+          />
+          <CardActions style={EventShowStyle.buttonContainer}>
+            <RaisedButton disabled={this.state.numberToBook ? false : true} label="Request Wait" primary={true} onTouchTap={this._requestWait.bind(this, event)} />
           </CardActions>
         </Card>)
     }
@@ -114,7 +118,7 @@ class EventShow extends LinkedComponent {
           <Card
             title="Wait Requested"
           >
-            <CardActions >
+            <CardActions style={EventShowStyle.buttonContainer}>
               <RaisedButton label="Your wait will begin soon" primary={true} disabled />
             </CardActions>
           </Card>)
@@ -123,7 +127,7 @@ class EventShow extends LinkedComponent {
           <Card
             title="Wait in progress"
           >
-            <CardActions >
+            <CardActions style={EventShowStyle.buttonContainer}>
               <RaisedButton label="Your wait is being taken care of" primary={true} disabled />
             </CardActions>
           </Card>)
@@ -162,21 +166,23 @@ class EventShow extends LinkedComponent {
 
   _unregister(event, userId) {
     this.dispatch(EventsActions.unregisterToEvent(event._id, userId))
-      .then(() => this.dispatch(UserActions.getUser(userId)));
+      .then(() => this.dispatch(UserActions.getUser(userId)))
   }
 
   _queueStart(waitId, waiterId) {
-    this.dispatch(WaitActions.changeWaitState(waitId, waiterId, "queue-start"));
+    this.dispatch(WaitActions.changeWaitState(waitId, waiterId, "queue-start"))
+      .then(() => this.dispatch(WaitActions.getCurrentWait(this.props.user._id, this.state.isWaiter ? 'waiter' : 'client')))
   }
 
   _queueDone(waitId, waiterId) {
-    this.dispatch(WaitActions.changeWaitState(waitId, waiterId, "queue-done"));
+    this.dispatch(WaitActions.changeWaitState(waitId, waiterId, "queue-done"))
+      .then(() => this.dispatch(WaitActions.getCurrentWait(this.props.user._id, this.state.isWaiter ? 'waiter' : 'client')))
   }
 
   _validateCode(code, waitId, waiterId) {
     this.dispatch(WaitActions.validateCode(this.state.code, waitId, waiterId))
       .then(() => {
-        this.setState({ isBusy: 0 });
+        this.setState({ isBusy: 0, wait: {} });
       });
   }
 
@@ -189,7 +195,7 @@ class EventShow extends LinkedComponent {
           title="You can register to this event"
         >
           <CardText style={EventShowStyle.textContainer}>Press this button to register</CardText>
-          <CardActions >
+          <CardActions style={EventShowStyle.buttonContainer}>
             <RaisedButton label="Register" primary={true} onTouchTap={this._register.bind(this, event, userId)} />
           </CardActions>
         </Card>
@@ -200,7 +206,7 @@ class EventShow extends LinkedComponent {
           title="You are now subscribed to this event"
         >
           <CardText style={EventShowStyle.textContainer}>You'll soon be requested for waiting :)</CardText>
-          <CardActions >
+          <CardActions style={EventShowStyle.buttonContainer}>
             <RaisedButton label="Unsubscribe" primary={true} onTouchTap={this._unregister.bind(this, event, userId)} />
           </CardActions>
         </Card>)
@@ -212,7 +218,7 @@ class EventShow extends LinkedComponent {
             title="You have been requested !"
           >
             <CardText style={EventShowStyle.textContainer}>Press this button to let your client know that you begun waiting :)</CardText>
-            <CardActions >
+            <CardActions style={EventShowStyle.buttonContainer}>
               <RaisedButton label="Start Waiting" primary={true} onTouchTap={this._queueStart.bind(this, wait._id, userId)} />
             </CardActions>
           </Card>)
@@ -222,7 +228,7 @@ class EventShow extends LinkedComponent {
             title="Wait in line !"
           >
             <CardText style={EventShowStyle.textContainer}>When you're done with you're wait, press this button to let your client know you've done your job</CardText>
-            <CardActions >
+            <CardActions style={EventShowStyle.buttonContainer}>
               <RaisedButton label="My wait is over" primary={true} onTouchTap={this._queueDone.bind(this, wait._id, userId)} />
             </CardActions>
           </Card>)
@@ -238,7 +244,7 @@ class EventShow extends LinkedComponent {
               value={this.state.code}
               onChange={this.linkState("code")}
             />
-            <CardActions >
+            <CardActions style={EventShowStyle.buttonContainer}>
               <RaisedButton label="Confirm" primary={true} onTouchTap={this._validateCode.bind(this, this.state.code, wait._id, userId)} />
             </CardActions>
           </Card>)
@@ -261,14 +267,14 @@ class EventShow extends LinkedComponent {
           subtitle={"Detail de l'evenement " + event.name}
           style={EventShowStyle.headers}
         />
-        <CardActions>
+        <CardActions style={EventShowStyle.buttonContainer}>
           <RaisedButton label="Refresh" primary={true} onTouchTap={this._onRefresh.bind(this)} />
         </CardActions>
-        <CardText
+        <CardText style={EventShowStyle.buttonContainer}
         >
           {event.description}
         </CardText>
-        <CardText>
+        <CardText style={EventShowStyle.buttonContainer}>
           {event.address}
         </CardText>
         {

@@ -23,7 +23,7 @@ class Signin extends LinkedComponent {
     _handleSubmit() {
         this.dispatchWithLoader(AuthenticationActions.create(this.state))
         .then(() => this.dispatchWithLoader(UserActions.getUser(this.props.userId)))
-        .then(() => this.redirect("/events"));
+        .then(() => this.redirect("/map"));
     }
 
     render() {
@@ -50,9 +50,9 @@ class Signin extends LinkedComponent {
                 </CardMedia>
                 <CardActions style={style.headers}>
                     <RaisedButton label="Login" primary={true} style={style.buttonStyle} onTouchTap={this._handleSubmit.bind(this)}/>
-                    <RaisedButton 
-                        label="Signup" 
-                        primary={true} 
+                    <RaisedButton
+                        label="Signup"
+                        primary={true}
                         style={style.buttonStyle}
                         onTouchTap={() => this.redirect('signup')}
                     />

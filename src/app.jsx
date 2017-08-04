@@ -14,7 +14,8 @@ class App extends LinkedComponent {
   constructor() {
     super();
     this.state = {
-      navOpen: false
+      navOpen: false,
+      userType: ""
     };
   }
 
@@ -34,10 +35,10 @@ class App extends LinkedComponent {
     if (!nextProps.authentication.get('token') && !(window.location.pathname === "/signin" || window.location.pathname === "/signup")) {
       this.redirect("/signin");
     }
-    console.log(nextProps.authentication.get('userId'))
     if (nextProps.authentication.get('userId') && nextProps.authentication.get('userId') !== this.props.authentication.get('userId')) {
       this.props.dispatch(UserActions.getUser(nextProps.authentication.get('userId')));
     }
+    this.setState({userType: nextProps.userType ? "Switch to client" : "Switch to waiter"})
   }
 
   _toggle(e) {
@@ -47,11 +48,23 @@ class App extends LinkedComponent {
     })
   }
 
+  _toggleType() {
+    this.props.dispatch(UserActions.toggleUserType(!this.props.userType));
+  }
+
   _navigate(path) {
     this.setState({
       navOpen: false
     });
     this.redirect(path)
+  }
+
+  _handleLogOut() {
+      this.setState({
+        navOpen: false
+      });
+      this.props.dispatch(AuthenticationActions.destroy());
+      this.redirect("signin");
   }
 
   render() {
@@ -71,11 +84,15 @@ class App extends LinkedComponent {
             <AppBar
               title="Menu"
               iconElementRight={<FontIcon className="material-icons" color={white} style={{ marginRight: 24 }}>clear</FontIcon>}
+              onRightIconButtonTouchTap={this._toggle.bind(this)}
+              onLeftIconButtonTouchTap={this._toggle.bind(this)}
             />
             <MenuItem leftIcon={<FontIcon className="material-icons" >map</FontIcon>} onTouchTap={() => this._navigate('map')}>Map</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('events')}>Events</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >account_circle</FontIcon>} onTouchTap={() => this._navigate('account')}>Account</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('security')}>Security</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >cached</FontIcon>} onTouchTap={this._toggleType.bind(this)}>{this.state.userType}</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >input</FontIcon>} onTouchTap={this._handleLogOut.bind(this)}>Log Out</MenuItem>
           </Drawer>
           <div className="content">
             {this.props.children}
@@ -92,6 +109,7 @@ class App extends LinkedComponent {
 export default connect((state) => {
   return {
     loader: state.loader,
-    authentication: state.authentication
+    authentication: state.authentication,
+    userType: state.user.get("isWaiter")
   }
 })(App);

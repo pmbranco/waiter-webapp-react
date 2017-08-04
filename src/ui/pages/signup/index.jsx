@@ -24,7 +24,7 @@ class Signup extends LinkedComponent {
     _handleSubmit() {
         this.dispatchWithLoader(AuthenticationActions.signup(this.state))
         .then(() => this.dispatchWithLoader(UserActions.getUser(this.props.userId)))
-        .then(() => this.redirect("/events"));
+        .then(() => this.redirect("/map"));
     }
 
     render() {
