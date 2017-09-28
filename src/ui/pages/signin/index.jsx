@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 
 const style = require('./style.js').default;
 
@@ -15,18 +16,41 @@ class Signin extends LinkedComponent {
 
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            open: false,
+            causes: []
         }
     }
 
 
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
     _handleSubmit() {
         this.dispatchWithLoader(AuthenticationActions.create(this.state))
-        .then(() => this.dispatchWithLoader(UserActions.getUser(this.props.userId)))
-        .then(() => this.redirect("/map"));
+            .then(() => this.dispatchWithLoader(UserActions.getUser(this.props.userId)))
+            .then(() => this.redirect("/map"))
+            .catch((err) => {
+                this.setState({
+                    open: true,
+                    causes: err.data.causes
+                })
+            });
     }
 
     render() {
+        const actions = [
+            <RaisedButton
+                label="Ok"
+                primary={true}
+                onClick={this.handleClose}
+            />
+        ];
         return (
             <Card>
                 <CardTitle
@@ -49,7 +73,7 @@ class Signin extends LinkedComponent {
                     />
                 </CardMedia>
                 <CardActions style={style.headers}>
-                    <RaisedButton label="Login" primary={true} style={style.buttonStyle} onTouchTap={this._handleSubmit.bind(this)}/>
+                    <RaisedButton label="Login" primary={true} style={style.buttonStyle} onTouchTap={this._handleSubmit.bind(this)} />
                     <RaisedButton
                         label="Signup"
                         primary={true}
@@ -57,13 +81,33 @@ class Signin extends LinkedComponent {
                         onTouchTap={() => this.redirect('signup')}
                     />
                 </CardActions>
+                <Dialog
+                    actions={actions}
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}
+                >
+                There has been an error with your credentials, please try again.
+                <br />
+                <br />
+                    {
+                        this.state.causes.map((err, index) => {
+                            return (
+                                <div key={index}>
+                                    {err}
+                                    <br/>
+                                </div>
+                            )
+                        })
+                    }                
+                </Dialog>
             </Card>
         );
     }
 }
 
 export default connect((state) => {
-  return {
-      userId: state.authentication.get("userId")
-  };
+    return {
+        userId: state.authentication.get("userId")
+    };
 })(Signin);

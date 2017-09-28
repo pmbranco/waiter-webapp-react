@@ -3,7 +3,8 @@ import LocalStorage from 'localStorage';
 
 const defaultState = new Immutable.fromJS({
   token: LocalStorage.getItem('token'),
-  userId: LocalStorage.getItem('userId')
+  userId: LocalStorage.getItem('userId'),
+  error: false
 });
 
 function authentication_reducer (state = defaultState, action) {

@@ -89,6 +89,7 @@ class App extends LinkedComponent {
             />
             <MenuItem leftIcon={<FontIcon className="material-icons" >map</FontIcon>} onTouchTap={() => this._navigate('map')}>Map</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('events')}>Events</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('past_waits')}>Past Waits</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >account_circle</FontIcon>} onTouchTap={() => this._navigate('account')}>Account</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('security')}>Security</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >cached</FontIcon>} onTouchTap={this._toggleType.bind(this)}>{this.state.userType}</MenuItem>

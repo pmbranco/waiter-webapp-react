@@ -3,6 +3,7 @@ import LocalStorage from 'localStorage';
 
 const defaultState = new Immutable.fromJS({
   user: {},
+  pastWaits: [],
   isWaiter: 0
 });
 
@@ -40,6 +41,13 @@ function user_reducer(state = defaultState, action) {
       console.log("coucou")
       console.log(action.data)
       return state.set('isWaiter', action.data.userType);
+
+    case 'GET_PAST_WAITS_SUCCESS':
+      nextState = state.set('pastWaits', action.data.data.wait)
+      return nextState;
+
+    case 'GET_PAST_WAITS_FAILURE':
+      return state;
 
     default:
       return state;

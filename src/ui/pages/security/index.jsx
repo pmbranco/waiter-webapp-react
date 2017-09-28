@@ -8,6 +8,7 @@ const style = require('./style.js').default;
 import { UserActions } from '../../../actions';
 
 import LinkedComponent from '../../../infrastructure/linked_component';
+import Dialog from 'material-ui/Dialog';
 
 class Security extends LinkedComponent {
     constructor() {
@@ -15,9 +16,19 @@ class Security extends LinkedComponent {
 
         this.state = {
             newPassword: "",
-            password: ""
+            password: "",
+            open: false,
+            causes: []
         }
     }
+
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     _handleSubmit() {
         this.dispatchWithLoader(UserActions.updatePassword({
@@ -25,9 +36,22 @@ class Security extends LinkedComponent {
             newPassword: this.state.newPassword,
             userId: this.props.user._id
         }))
+            .catch((err) => {
+                this.setState({
+                    open: true,
+                    causes: err.data.causes
+                })
+            });
     }
 
     render() {
+        const actions = [
+            <RaisedButton
+                label="Ok"
+                primary={true}
+                onClick={this.handleClose}
+            />
+        ];
         return (
             <Card>
                 <CardMedia style={style.inputStyle}>
@@ -46,15 +70,35 @@ class Security extends LinkedComponent {
                     />
                 </CardMedia>
                 <CardActions style={style.headers}>
-                    <RaisedButton label="Save" primary={true} style={style.buttonStyle} onTouchTap={this._handleSubmit.bind(this)}/>
+                    <RaisedButton label="Save" primary={true} style={style.buttonStyle} onTouchTap={this._handleSubmit.bind(this)} />
                 </CardActions>
+                <Dialog
+                    actions={actions}
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}
+                >
+                    There has been an error with your credentials, please try again.
+                <br />
+                    <br />
+                    {
+                        this.state.causes.map((err, index) => {
+                            return (
+                                <div key={index}>
+                                    {err}
+                                    <br />
+                                </div>
+                            )
+                        })
+                    }
+                </Dialog>
             </Card>
         );
     }
 }
 
 export default connect((state) => {
-  return {
-      user: state.user.get("user")
-  };
+    return {
+        user: state.user.get("user")
+    };
 })(Security);

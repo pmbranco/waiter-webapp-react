@@ -48,6 +48,13 @@ function toggleUserType(userType) {
   }
 }
 
+function getPastWaits(userId) {
+  return {
+      type: "GET_PAST_WAITS",
+      promise: ApiCallLib.get(`/wait/user/${userId}/history`, 'client')
+  }
+}
+
 // --------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------
@@ -57,5 +64,6 @@ export default {
   updatePassword,
   getUser,
   updateUser,
-  toggleUserType
+  toggleUserType,
+  getPastWaits
 };

@@ -7,6 +7,7 @@ const style = require('./style.js').default;
 import LinkedComponent from '../../../infrastructure/linked_component';
 import { EventsActions } from '../../../actions';
 import RaisedButton from 'material-ui/RaisedButton';
+import {geolocated} from 'react-geolocated';
 
 
 // Wrap all `react-google-maps` components with `withGoogleMap` HOC
@@ -14,7 +15,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 const SimpleMapExampleGoogleMap = withGoogleMap(props => (
   <GoogleMap
     defaultZoom={8}
-    defaultCenter={{ lat: 43.6047, lng: 1.4442 }}
+    defaultCenter={{ lat: props.coordinate.latitude, lng: props.coordinate.longitude }}
   >
     {props.markers.map((marker, index) => (
       <Marker
@@ -41,7 +42,8 @@ class Map extends LinkedComponent {
     this.state = {
       events: [],
       width: '0',
-      height: '0'
+      height: '0',
+      coordinate: null
     };
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleMarkerClose = this.handleMarkerClose.bind(this);
@@ -49,8 +51,24 @@ class Map extends LinkedComponent {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
+  _onSuccessLocation(data) {
+    this.setState({
+      coordinate: data.coords
+    });
+  }
+
+  _onErrorLocation(data) {
+    this.setState({
+      coordinate: {
+        latitude: 43.5971644,
+        longitude: 1.4280699
+      }
+    });
+  }
+
   componentWillMount() {
     this.props.dispatch(EventsActions.getAllEvents());
+    navigator.geolocation.getCurrentPosition(this._onSuccessLocation.bind(this), this._onErrorLocation.bind(this))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,7 +128,10 @@ class Map extends LinkedComponent {
   }
 
   render() {
-    console.log(this.state.events);
+    if (!this.state.coordinate) {
+      return null
+    }
+    console.log(this.state.coordinate);
     return (
       <div style={{ height: this.state.height - 64 }}>
         <SimpleMapExampleGoogleMap
@@ -120,6 +141,7 @@ class Map extends LinkedComponent {
           mapElement={
             <div style={{ height: `100%` }} />
           }
+          coordinate={this.state.coordinate}
           markers={this.state.events}
           onMarkerClick={this.handleMarkerClick}
           onMarkerClose={this.handleMarkerClose}

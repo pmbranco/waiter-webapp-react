@@ -15,7 +15,8 @@ export default (store) => {
       require('./routes/map/map').default,
       require('./routes/security/security').default,
       require('./routes/signin/signin').default,
-      require('./routes/signup/signup').default
+      require('./routes/signup/signup').default,
+      require('./routes/past_waits/past_waits').default
     ]
   }
 }

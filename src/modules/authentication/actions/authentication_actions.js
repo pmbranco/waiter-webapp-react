@@ -7,7 +7,6 @@ import { ApiCallLib } from '../../../libs'
 // --------------------------------------------------------------------------------
 
 function signup(signupParams) {
-
   return {
     type: 'SIGNUP_CREATE',
     promise: ApiCallLib.post('/user/register', {

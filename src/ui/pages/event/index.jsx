@@ -35,8 +35,6 @@ class Events extends LinkedComponent {
             )
         }
         const children = events.map((event, index) => {
-          console.log("lol");
-          console.log(event);
             return (
                 <EventMiniature
                     event={event}

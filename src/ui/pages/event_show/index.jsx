@@ -10,7 +10,7 @@ import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'm
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
-
+import Rating from 'react-rating';
 
 class EventShow extends LinkedComponent {
   constructor() {
@@ -23,7 +23,9 @@ class EventShow extends LinkedComponent {
       numberToBook: 1,
       isBusy: 0,
       userId: "",
-      isWaiter: 0
+      isWaiter: 0,
+      rated: false,
+      starCount: 3
     }
   }
 
@@ -38,6 +40,11 @@ class EventShow extends LinkedComponent {
     ]);
   }
 
+  _onSubmitRating() {
+    this.setState({
+      rated: true
+    })
+  }
 
   componentWillReceiveProps(nextProps) {
     this.state.event = nextProps.event;
@@ -132,8 +139,7 @@ class EventShow extends LinkedComponent {
             </CardActions>
           </Card>)
       case 'queue-done':
-        console.log(wait)
-        if (wait.confirmationCode && wait.confirmationCode !== "") {
+        if (wait.confirmationCode && wait.confirmationCode !== "" && this.state.rated !== false) {
           return (
             <Card
               title="The Wait is over !"
@@ -148,7 +154,21 @@ class EventShow extends LinkedComponent {
             <Card
               title="The Wait is over !"
             >
-              <CardText style={EventShowStyle.textContainer}>Your code is generating and will be displayed in a bit :</CardText>
+              <CardText style={EventShowStyle.textContainer}>Rate your waiter to see your code :</CardText>
+              <CardActions style={EventShowStyle.buttonContainer}>
+                <Rating
+                  start={0}
+                  stop={5}
+                  step={1}
+                  initialRate={this.state.starCount}
+                  rating={this.state.starCount}
+                  selectedStar={(rating) => this._onStarRatingPress(rating)}
+                  style={{ paddingVertical: 10 }}
+                />
+              </CardActions>
+              <CardActions style={EventShowStyle.buttonContainer}>
+                <RaisedButton label="Submit Rating" primary={true} onTouchTap={this._onSubmitRating.bind(this)} />
+              </CardActions>
             </Card>
           )
         }
