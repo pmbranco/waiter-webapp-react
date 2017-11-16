@@ -6,7 +6,7 @@ import config from '../config';
 const querystring = require('querystring');
 
 let globalHeaders = {};
-const RequestHandler = (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) ? http : https;
+const RequestHandler = (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) ? https : https;
 
 class ApiCallLib {
 

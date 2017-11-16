@@ -53,7 +53,7 @@ class Security extends LinkedComponent {
             />
         ];
         return (
-            <Card>
+            <Card style={{margin: "100px", padding: "20px"}}>
                 <CardMedia style={style.inputStyle}>
                     <TextField
                         hintText="Current Password"

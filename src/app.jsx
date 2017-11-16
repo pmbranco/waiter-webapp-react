@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { AppBar, Drawer, MenuItem, FontIcon } from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import { white } from 'material-ui/styles/colors';
 
 import LinkedComponent from './infrastructure/linked_component';
@@ -68,9 +70,25 @@ class App extends LinkedComponent {
   }
 
   render() {
+    const waiterTheme = getMuiTheme({
+      palette: {
+        primary1Color: "#1e4561",
+        primary2Color: "#122a3c",
+        canvasColor: "#f2f2f2"        
+      }
+    });
+
+    const clientTheme = getMuiTheme({
+      palette: {
+        primary1Color: "#79C3BD",
+        primary2Color: "#508b94",
+        canvasColor: "#f2f2f2"
+      }
+    });
+
     return (
-      <MuiThemeProvider>
-        <div>
+      <MuiThemeProvider  muiTheme={getMuiTheme(this.props.userType === true ? clientTheme : waiterTheme)}>
+        <div style={{height: "100%"}}>
           <AppBar
             title="Waiter"
             onLeftIconButtonTouchTap={this._toggle.bind(this)}
@@ -92,6 +110,7 @@ class App extends LinkedComponent {
             <MenuItem leftIcon={<FontIcon className="material-icons" >event</FontIcon>} onTouchTap={() => this._navigate('past_waits')}>Past Waits</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >account_circle</FontIcon>} onTouchTap={() => this._navigate('account')}>Account</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('security')}>Security</MenuItem>
+            <MenuItem leftIcon={<FontIcon className="material-icons" >security</FontIcon>} onTouchTap={() => this._navigate('manage_payments')}>Manage Payments</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >cached</FontIcon>} onTouchTap={this._toggleType.bind(this)}>{this.state.userType}</MenuItem>
             <MenuItem leftIcon={<FontIcon className="material-icons" >input</FontIcon>} onTouchTap={this._handleLogOut.bind(this)}>Log Out</MenuItem>
           </Drawer>

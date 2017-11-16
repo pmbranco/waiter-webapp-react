@@ -47,7 +47,6 @@ class Events extends LinkedComponent {
     }
 
     _handleEventView(eventId) {
-        console.log("la je me redirige vers : ", eventId);
         this.redirect(`/events/${eventId}`);
     }
 

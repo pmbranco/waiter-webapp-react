@@ -24,7 +24,7 @@ class EventMiniature extends LinkedComponent {
     render() {
         const event = this.props.event;
         return (
-            <Card>
+            <Card style={{margin: "10px"}}>
                 <CardTitle
                     title={event.name}
                     subtitle={event.description}

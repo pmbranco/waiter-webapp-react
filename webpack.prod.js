@@ -34,6 +34,10 @@ module.exports = {
         exclude: [/node_modules/]
       },
       {
+          test: /\.scss$/,
+          loader: 'sass-loader'
+        },
+      {
         test: /\.(ico|png|jpe?g|gif)$/,
         loader: "file-loader?name=images/[name].[ext]"
       }, {

@@ -4,7 +4,8 @@ import LocalStorage from 'localStorage';
 const defaultState = new Immutable.fromJS({
   user: {},
   pastWaits: [],
-  isWaiter: 0
+  isWaiter: false,
+  savedCards: []
 });
 
 function user_reducer(state = defaultState, action) {
@@ -23,14 +24,12 @@ function user_reducer(state = defaultState, action) {
       oldUser.lastName = action.info.lastName;
       oldUser.email = action.info.email;
 
-      console.log(oldUser);
       return state.set("user", oldUser);
 
     case 'PROFILE_UPDATE_FAILURE':
       return state;
 
     case 'GET_USER_SUCCESS':
-      console.log(action.data.data.user)
       nextState = state.set('user', action.data.data.user);
       return nextState;
 
@@ -38,8 +37,6 @@ function user_reducer(state = defaultState, action) {
       return state;
 
     case 'TOGGLE_USER':
-      console.log("coucou")
-      console.log(action.data)
       return state.set('isWaiter', action.data.userType);
 
     case 'GET_PAST_WAITS_SUCCESS':
@@ -47,6 +44,20 @@ function user_reducer(state = defaultState, action) {
       return nextState;
 
     case 'GET_PAST_WAITS_FAILURE':
+      return state;
+
+    case 'GET_CARDS_SUCCESS':
+      //console.log(action.data.data);
+      nextState = state.set('savedCards', action.data.data.cards)
+      return nextState;
+    case 'GET_CARDS_FAILURE':
+      return state;
+
+    case 'SAVE_CARD_SUCCESS':
+      const tmp = [action.info.cardToken];
+      nextState = state.set('savedCards', tmp.concat(state.toJS().savedCards));
+      return nextState;
+    case 'SAVE_CARD_FAILURE':
       return state;
 
     default:

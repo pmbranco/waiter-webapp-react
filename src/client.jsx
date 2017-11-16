@@ -1,12 +1,13 @@
 import Immutable from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {browserHistory, Router} from 'react-router';
-import {Provider} from 'react-redux';
-import {syncHistoryWithStore} from 'react-router-redux';
+import { browserHistory, Router } from 'react-router';
+import { Provider } from 'react-redux';
+import { syncHistoryWithStore } from 'react-router-redux';
+import { StripeProvider } from 'react-stripe-elements';
 
-import {configure as configureStore} from './store';
-import {default as routes} from './routes';
+import { configure as configureStore } from './store';
+import { default as routes } from './routes';
 
 const initialState = window.__INITIAL_STATE__;
 Object.keys(initialState).forEach(k => initialState[k] = Immutable.fromJS(initialState[k]));
@@ -20,14 +21,16 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 if (process.env.BROWSER) {
-  window.jQuery = window.$ = require('jquery/dist/jquery');
+    window.jQuery = window.$ = require('jquery/dist/jquery');
 }
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router routes={routes(store)} history={history}/>
-  </Provider>,
-  document.getElementById('app')
+    <Provider store={store}>
+        <StripeProvider apiKey="pk_test_hSipBuKxXUGrnuu2XpqrNpm4">
+            <Router routes={routes(store)} history={history} />
+        </StripeProvider>
+    </Provider>,
+    document.getElementById('app')
 );
 
 

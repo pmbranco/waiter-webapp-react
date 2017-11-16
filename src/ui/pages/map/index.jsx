@@ -7,7 +7,7 @@ const style = require('./style.js').default;
 import LinkedComponent from '../../../infrastructure/linked_component';
 import { EventsActions } from '../../../actions';
 import RaisedButton from 'material-ui/RaisedButton';
-import {geolocated} from 'react-geolocated';
+import { geolocated } from 'react-geolocated';
 
 
 // Wrap all `react-google-maps` components with `withGoogleMap` HOC
@@ -68,7 +68,17 @@ class Map extends LinkedComponent {
 
   componentWillMount() {
     this.props.dispatch(EventsActions.getAllEvents());
-    navigator.geolocation.getCurrentPosition(this._onSuccessLocation.bind(this), this._onErrorLocation.bind(this))
+    if (navigator.geolocation !== undefined) {
+      navigator.geolocation.getCurrentPosition(this._onSuccessLocation.bind(this), this._onErrorLocation.bind(this));
+    } else {
+      this.setState({
+        coordinate: {
+          latitude: 43.5971644,
+          longitude: 1.4280699
+        }
+      });
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -131,7 +141,6 @@ class Map extends LinkedComponent {
     if (!this.state.coordinate) {
       return null
     }
-    console.log(this.state.coordinate);
     return (
       <div style={{ height: this.state.height - 64 }}>
         <SimpleMapExampleGoogleMap

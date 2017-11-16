@@ -84,6 +84,10 @@ export default function (app) {
           loader: 'url-loader'
         },
         {
+          test: /\.scss$/,
+          loader: 'sass-loader'
+        },
+        {
           test: /\.(ttf|eot|woff(2)?)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader'
         }],

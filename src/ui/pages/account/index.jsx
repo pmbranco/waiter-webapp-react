@@ -74,7 +74,7 @@ class Account extends LinkedComponent {
             />
         ];
         return (
-            <Card>
+            <Card style={{margin: "100px", padding: "20px"}}>
                 <CardMedia style={style.inputStyle}>
                     <TextField
                         hintText="First Name"

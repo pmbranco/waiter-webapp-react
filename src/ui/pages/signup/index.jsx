@@ -54,7 +54,7 @@ class Signup extends LinkedComponent {
             />
         ];
         return (
-            <Card>
+            <Card style={{margin: "100px", padding: "20px"}}>
                 <CardTitle
                     title="Welcome to Waiter"
                     subtitle="Skip the line"

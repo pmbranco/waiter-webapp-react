@@ -279,9 +279,8 @@ class EventShow extends LinkedComponent {
     let event = this.state.event;
     let wait = this.state.wait;
     let isWaiter = this.state.isWaiter;
-    console.log(this.state.isWaiter);
     return (
-      <Card>
+      <Card style={{margin: "100px", padding: "20px"}}>
         <CardTitle
           title={event.name}
           subtitle={"Detail de l'evenement " + event.name}

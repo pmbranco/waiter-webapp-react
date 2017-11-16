@@ -78,14 +78,15 @@ function _renderView (store, renderProps, manifest) {
         <head>
           <meta charset="utf-8">
           <meta http-equiv="X-UA-Compatible" content="IE=edge">
-          <link rel="icon" type="image/x-icon" href="./images/favicon.ico" />
-          <link rel="stylesheet" href="/${manifest["app.css"]}">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+          <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+          <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
           ${head.title}
           ${head.meta}
           <script type="application/javascript">
-            window.__INITIAL_STATE__ = ${JSON.stringify(state)};
+          window.__INITIAL_STATE__ = ${JSON.stringify(state)};
           </script>
+          <script src="https://js.stripe.com/v3/"></script>
           <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFzEEpqoJspKbTgb2vBhf3F5UP-NtLnHE"></script>
         </head>
         <body style="height:100%">
