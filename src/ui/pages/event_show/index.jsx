@@ -1,3 +1,5 @@
+"use strict"
+
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
@@ -11,6 +13,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
 import Rating from 'react-rating';
+
+// if (process.env !== "BROWSER") {
+//   return;
+// }
 
 class EventShow extends LinkedComponent {
   constructor() {
@@ -31,13 +37,28 @@ class EventShow extends LinkedComponent {
 
   componentWillMount() {
     const splitedPath = this.props.location.pathname.split("/"); // A utiliser voir si ca regle pas le pb du refresh
-    console.log()
     this.eventId = this.props.params.id;
     this.state.isWaiter = this.props.isWaiter;
-    this.dispatch([
-      EventsActions.getOneEvent(this.eventId),
-      WaitActions.getCurrentWait(this.props.user._id, this.props.isWaiter ? 'waiter' : 'client')
-    ]);
+/*     if (process.env === "BROWSER") {
+      this.dispatch([
+        EventsActions.getOneEvent(this.eventId),
+        WaitActions.getCurrentWait(this.props.user._id, this.props.isWaiter ? 'waiter' : 'client')
+      ]);
+    } */
+  }
+
+  componentDidMount() {
+    const splitedPath = this.props.location.pathname.split("/"); // A utiliser voir si ca regle pas le pb du refresh
+    this.eventId = this.props.params.id;
+    console.log("coucou");
+    console.log(this.props.params.id);
+    this.state.isWaiter = this.props.isWaiter;
+    if (process.env === "BROWSER") {
+      this.dispatch([
+        EventsActions.getOneEvent(this.eventId),
+        WaitActions.getCurrentWait(this.props.user._id, this.props.isWaiter ? 'waiter' : 'client')
+      ]);
+    }
   }
 
   _onSubmitRating() {
@@ -47,10 +68,16 @@ class EventShow extends LinkedComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.state.event = nextProps.event;
-    this.state.wait = nextProps.wait;
-    this.state.isBusy = nextProps.user.waiterCurrentEvent ? 1 : 0;
-    this.state.isWaiter = nextProps.isWaiter;
+    // this.state.event = nextProps.event;
+    // this.state.wait = nextProps.wait;
+    // this.state.isBusy = nextProps.user.waiterCurrentEvent ? 1 : 0;
+    // this.state.isWaiter = nextProps.isWaiter;
+    this.setState({
+      event: nextProps.event,
+      wait : nextProps.wait,
+      isBusy : nextProps.user.waiterCurrentEvent ? 1 : 0,
+      isWaiter : nextProps.isWaiter
+    });
   }
 
   _onRefresh() {
@@ -88,7 +115,7 @@ class EventShow extends LinkedComponent {
         </Card>
       )
     }
-    if (!event.listOfWaiters.length && _.isEmpty(wait)) {
+    if (event.listOfWaiters != undefined && !event.listOfWaiters.length && _.isEmpty(wait)) {
       return (
         <Card
           title="No Waiter found"
@@ -109,7 +136,7 @@ class EventShow extends LinkedComponent {
           <CardText style={EventShowStyle.textContainer}>Waiter to Request : {this.state.numberToBook}</CardText>
           <Slider
             min={0}
-            max={event.listOfWaiters.length}
+            max={event.listOfWaiters != undefined ? event.listOfWaiters.length : 0}
             step={1}
             value={this.state.numberToBook}
             onChange={this.handleSlider}
@@ -173,6 +200,7 @@ class EventShow extends LinkedComponent {
           )
         }
       default:
+        this._onRefresh();
         return (
           <CardText>Not Waiter</CardText>
         )
@@ -269,6 +297,7 @@ class EventShow extends LinkedComponent {
             </CardActions>
           </Card>)
       default:
+        this._onRefresh();
         return (
           <CardText>Waiter</CardText>
         )
@@ -280,7 +309,7 @@ class EventShow extends LinkedComponent {
     let wait = this.state.wait;
     let isWaiter = this.state.isWaiter;
     return (
-      <Card style={{margin: "100px", padding: "20px"}}>
+      <Card style={{ margin: "100px", padding: "20px" }}>
         <CardTitle
           title={event.name}
           subtitle={"Detail de l'evenement " + event.name}

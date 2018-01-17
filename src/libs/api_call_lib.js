@@ -102,7 +102,13 @@ class ApiCallLib {
         let fullData = "";
         response.on('data', (chunk) => {
           if (!/^20\d$/.test(response.statusCode)) {
-            return reject(JSON.parse(chunk));
+            
+            //if (ApiCallLib._IsJsonString(chunk)) {
+              return reject(JSON.parse(chunk));
+            // } else {
+            //   console.log(chunk);
+            //   return (reject(true));
+            // }
           }
 
           fullData += chunk;
@@ -133,6 +139,9 @@ class ApiCallLib {
    * @private
    */
   static _tryParseJSON (data) {
+
+    console.log(data);
+
     let result = data;
     try {
       result = JSON.parse(data);
@@ -143,6 +152,15 @@ class ApiCallLib {
 
     return result;
   }
+
+  static _IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 }
 
 export default ApiCallLib;
