@@ -32,7 +32,7 @@ class EventShow extends LinkedComponent {
       isWaiter: 0,
       rated: false,
       starCount: 3,
-      fixDegeu: 1
+      fixDegeu: 3
     }
   }
 
@@ -311,7 +311,7 @@ class EventShow extends LinkedComponent {
     let wait = this.state.wait;
     let isWaiter = this.state.isWaiter;
 
-    if (this.state.fixDegeu > 0) {
+    /* if (this.state.fixDegeu > 0) {
       this.dispatch([
         EventsActions.getOneEvent(this.eventId),
         WaitActions.getCurrentWait(this.props.user._id, this.props.isWaiter ? 'waiter' : 'client')
@@ -319,7 +319,7 @@ class EventShow extends LinkedComponent {
       this.setState({
         fixDegeu: this.state.fixDegeu - 1
       })
-    }
+    } */
     return (
       <Card style={{ margin: "100px", padding: "20px" }}>
         <CardTitle

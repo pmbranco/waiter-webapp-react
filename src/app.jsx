@@ -72,16 +72,16 @@ class App extends LinkedComponent {
   render() {
     const waiterTheme = getMuiTheme({
       palette: {
-        primary1Color: "#1e4561",
-        primary2Color: "#122a3c",
+        primary1Color: "#263238",
+        primary2Color: "#000a12",
         canvasColor: "#f2f2f2"        
       }
     });
 
     const clientTheme = getMuiTheme({
       palette: {
-        primary1Color: "#79C3BD",
-        primary2Color: "#508b94",
+        primary1Color: "#1E4561",
+        primary2Color: "#153145",
         canvasColor: "#f2f2f2"
       }
     });
