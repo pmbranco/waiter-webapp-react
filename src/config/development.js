@@ -1,7 +1,7 @@
 module.exports = {
   app: 'waiter-webapp-react',
   api: {
-    protocol: 'https:',
+    protocol: 'http:',
     host: 'waiter-project.xyz:3000'
   },
   client: {
