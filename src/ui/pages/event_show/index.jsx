@@ -31,7 +31,8 @@ class EventShow extends LinkedComponent {
       userId: "",
       isWaiter: 0,
       rated: false,
-      starCount: 3
+      starCount: 3,
+      fixDegeu: 1
     }
   }
 
@@ -39,12 +40,13 @@ class EventShow extends LinkedComponent {
     const splitedPath = this.props.location.pathname.split("/"); // A utiliser voir si ca regle pas le pb du refresh
     this.eventId = this.props.params.id;
     this.state.isWaiter = this.props.isWaiter;
-/*     if (process.env === "BROWSER") {
+    if (process.env === "BROWSER") {
+      console.log("coucou putain");
       this.dispatch([
         EventsActions.getOneEvent(this.eventId),
         WaitActions.getCurrentWait(this.props.user._id, this.props.isWaiter ? 'waiter' : 'client')
       ]);
-    } */
+    }
   }
 
   componentDidMount() {
@@ -308,6 +310,16 @@ class EventShow extends LinkedComponent {
     let event = this.state.event;
     let wait = this.state.wait;
     let isWaiter = this.state.isWaiter;
+
+    if (this.state.fixDegeu > 0) {
+      this.dispatch([
+        EventsActions.getOneEvent(this.eventId),
+        WaitActions.getCurrentWait(this.props.user._id, this.props.isWaiter ? 'waiter' : 'client')
+      ]);
+      this.setState({
+        fixDegeu: this.state.fixDegeu - 1
+      })
+    }
     return (
       <Card style={{ margin: "100px", padding: "20px" }}>
         <CardTitle
