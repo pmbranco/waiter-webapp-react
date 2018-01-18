@@ -2,7 +2,7 @@ module.exports = {
   app: 'waiter-webapp-react',
   api: {
     protocol: 'https:',
-    host: 'waiter-api.herokuapp.com'
+    host: 'waiter-project.xyz:3000'
   },
   client: {
     port: '3004'
